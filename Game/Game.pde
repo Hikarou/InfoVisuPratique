@@ -134,7 +134,7 @@ void drawScore() {
   scoreBoard.beginDraw();
   scoreBoard.background(204, 204, 153);
   scoreBoard.text("Total Score :\n" + score.get(score.size() - 1) + "\n\nVelocity :\n" + mover.velocity.mag() + 
-    "\n\nLast Score :\n" + score.get(score.size() - 2) + "\n Size CC : = " + bc.scoreRecap.size(), 10, 10);
+    "\n\nLast Score :\n" + score.get(score.size() - 2), 10, 10);
   scoreBoard.endDraw();
 }
 
