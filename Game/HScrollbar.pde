@@ -45,6 +45,7 @@ class HScrollbar {
     }
     if (locked) {
       newSliderPosition = constrain(mouseX - barHeight/2, sliderPositionMin, sliderPositionMax);
+      changedScroll = true;
     }
     if (abs(newSliderPosition - sliderPosition) > 1) {
       sliderPosition = sliderPosition + (newSliderPosition - sliderPosition);

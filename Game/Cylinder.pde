@@ -13,7 +13,9 @@ class Cylinder {
 
   Cylinder(float posX, float posY, float posZ) {
     noStroke();
-    fill(128);
+    fill(128, 128,128);
+    lights();
+    translate(width/2, height/2, 0);
     location = new PVector(posX - width/2, posY, posZ - height/2);
     for (int i = 0; i < x.length; i++) {
       angle = (TWO_PI / cylinderResolution) * i;

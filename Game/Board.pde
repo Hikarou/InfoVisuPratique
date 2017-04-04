@@ -4,8 +4,9 @@ class Board {
     zAngle = 0.0;
   }
   void display(boolean isShiftClicked) {
-    noStroke();
+    //noStroke();
     fill(118);
+
     translate(width/2, height/2, 0);
     if (isShiftClicked) {
       rotateX(-PI/2.0);
@@ -15,5 +16,4 @@ class Board {
     }
     box(BOX_SIDE, BOX_THICK, BOX_SIDE);
   }
-  
 }
