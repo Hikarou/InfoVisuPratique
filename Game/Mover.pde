@@ -31,27 +31,32 @@ class Mover {
     if (location.x > BOX_SIDE/2) {
       velocity.x = velocity.x * -1.;
       location.x = BOX_SIDE/2;
+      score.add(score.get(score.size() - 1) - velocity.mag());
     } else if (location.x < -BOX_SIDE/2) {
       velocity.x = velocity.x * -1.;
       location.x = -BOX_SIDE/2;
+      score.add(score.get(score.size() - 1) - velocity.mag());
     }
     if (location.z > BOX_SIDE/2) {
       velocity.z = velocity.z * -1.;
       location.z = BOX_SIDE/2;
+      score.add(score.get(score.size() - 1) - velocity.mag());
     } else if (location.z < -BOX_SIDE/2) {
       velocity.z = velocity.z * -1.;
       location.z = -BOX_SIDE/2;
+      score.add(score.get(score.size() - 1) - velocity.mag());
     }
   }
-  
-  void checkCylinderCollision(Cylinder cylinder){
-     PVector Vdist = new PVector(location.x - cylinder.location.x, location.z - cylinder.location.z);
-     float distance = Vdist.mag();
-     if(distance <= BALL_RADIUS + cylinder.cylinderRadius){
-       location.x = location.x + Vdist.x  / (BALL_RADIUS+cylinder.cylinderRadius);
-       location.z = location.z + Vdist.z / (BALL_RADIUS+cylinder.cylinderRadius);
-       PVector normal = new PVector(location.x - cylinder.location.x, 0, location.z - cylinder.location.z).normalize();
-       velocity = PVector.sub(velocity, normal.mult(PVector.dot(velocity, normal) * 2));
-     }
-}
+
+  void checkCylinderCollision(Cylinder cylinder) {
+    PVector Vdist = new PVector(location.x - cylinder.location.x, location.z - cylinder.location.z);
+    float distance = Vdist.mag();
+    if (distance <= BALL_RADIUS + cylinder.cylinderRadius) {
+      score.add(score.get(score.size() - 1) + velocity.mag());
+      location.x = location.x + Vdist.x  / (BALL_RADIUS+cylinder.cylinderRadius);
+      location.z = location.z + Vdist.z / (BALL_RADIUS+cylinder.cylinderRadius);
+      PVector normal = new PVector(location.x - cylinder.location.x, 0, location.z - cylinder.location.z).normalize();
+      velocity = PVector.sub(velocity, normal.mult(PVector.dot(velocity, normal) * 2));
+    }
+  }
 }

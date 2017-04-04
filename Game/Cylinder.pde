@@ -12,9 +12,8 @@ class Cylinder {
   private float[] z = new float[cylinderResolution + 1]; // Use to create the cylinder.
 
   Cylinder(float posX, float posY, float posZ) {
-    stroke(0);
-    fill(128, 128, 128);
-    lights();
+    noStroke();
+    fill(128);
     location = new PVector(posX - width/2, posY, posZ - height/2);
     for (int i = 0; i < x.length; i++) {
       angle = (TWO_PI / cylinderResolution) * i;
