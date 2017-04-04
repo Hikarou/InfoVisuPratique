@@ -19,35 +19,25 @@ class BarChart {
   void update() {
     graphic.beginDraw();
     float widthRect = map(hs.sliderPosition, hs.sliderPositionMin, hs.sliderPositionMax, 2, 10);
-    //Limite le nombre de dessins
+    //To reduce number of writing processes
     if (changedScroll) {
       graphic.background(COLOUR);
-      for (int x = 0; x < scoreRecap.size(); x++) {
-        //draw bar ith
-        graphic.pushMatrix();
-        graphic.translate(x*widthRect, 0);
-        for (int y = 0; y < Math.min((int)(java.lang.Math.ceil(scoreRecap.get(x))/20), 21); y++) {
-          graphic.pushMatrix();
-          graphic.translate(0, BARCHART_HEIGHT-(y*SLOT_WIDTH));
-          drawSquaredCell(widthRect);
-          graphic.popMatrix();
-        }
-        graphic.popMatrix();
-      }
-      changedScroll = false;
-    } else if (mover.collisionCounter == 0){
-      //To reduce number of writing processing
+      lastDrawn = 0;
+    }
+    if (mover.collisionCounter == 0 || changedScroll) {
       int drawUntil = scoreRecap.size();
       for (int x = lastDrawn; x < drawUntil; x++) {
         graphic.pushMatrix();
         graphic.translate(x*widthRect, 0);
-        for (int y = 0; y < Math.min((int)(java.lang.Math.ceil(scoreRecap.get(x))/20), 21); y++) {
+        for (int y = 0; y < Math.min((int)(java.lang.Math.ceil(scoreRecap.get(x))/20), 20); y++) {
           graphic.pushMatrix();
-          graphic.translate(0, BARCHART_HEIGHT-(y*SLOT_WIDTH));
+          graphic.translate(0, BARCHART_HEIGHT-((y+2)*SLOT_WIDTH));
           drawSquaredCell(widthRect);
           graphic.popMatrix();
         }
         graphic.popMatrix();
+        lastDrawn = drawUntil;
+        changedScroll = false;
       }
     }
     graphic.endDraw();
