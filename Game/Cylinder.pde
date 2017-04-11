@@ -1,15 +1,12 @@
 class Cylinder {
   private PVector location; // Coordinate vector of cylinder.
-  private final float cylinderRadius = 40; // Cylinder radius.
-  private final float cylinderHeight = 50; // Cylinder height.
-  private final int cylinderResolution = 40; // Cylinder resolution.
   private PShape openCylinder = new PShape(); // The empty shell cylinder.
   private PShape topClosed = new PShape(); // The top circle of the cylinder.
   private PShape bottomClosed = new PShape(); // The bottom circle of the cylinder.
   private PShape cylinder = new PShape(); // A shape to unit them all, the complete cylinder.
   private float angle; // Use to create the cylinder.
-  private float[] x = new float[cylinderResolution + 1]; // Use to create the cylinder.
-  private float[] z = new float[cylinderResolution + 1]; // Use to create the cylinder.
+  private float[] x = new float[CYLINDER_RESOLUTION + 1]; // Use to create the cylinder.
+  private float[] z = new float[CYLINDER_RESOLUTION + 1]; // Use to create the cylinder.
 
   Cylinder(float posX, float posY, float posZ) {
     noStroke();
@@ -18,9 +15,9 @@ class Cylinder {
     translate(width/2, height/2, 0);
     location = new PVector(posX - width/2, posY, posZ - height/2);
     for (int i = 0; i < x.length; i++) {
-      angle = (TWO_PI / cylinderResolution) * i;
-      x[i] = sin(angle) * cylinderRadius;
-      z[i] = cos(angle) * cylinderRadius;
+      angle = (TWO_PI / CYLINDER_RESOLUTION) * i;
+      x[i] = sin(angle) * CYLINDER_RADIUS;
+      z[i] = cos(angle) * CYLINDER_RADIUS;
     }
     openCylinder = createShape();
     topClosed = createShape();
@@ -29,12 +26,12 @@ class Cylinder {
     bottomClosed.beginShape(TRIANGLE_FAN);
     topClosed.beginShape(TRIANGLE_FAN);
     bottomClosed.vertex(0, 0, 0);
-    topClosed.vertex(0, -cylinderHeight, 0);
+    topClosed.vertex(0, -CYLINDER_HEIGHT, 0);
     for (int i = 0; i < x.length; i++) {
       openCylinder.vertex(x[i], 0, z[i]);
-      openCylinder.vertex(x[i], -cylinderHeight, z[i]);
+      openCylinder.vertex(x[i], -CYLINDER_HEIGHT, z[i]);
       bottomClosed.vertex(x[i], 0, z[i]);
-      topClosed.vertex(x[i], -cylinderHeight, z[i]);
+      topClosed.vertex(x[i], -CYLINDER_HEIGHT, z[i]);
     }
     openCylinder.endShape();
     bottomClosed.endShape();   
@@ -55,13 +52,13 @@ class Cylinder {
   boolean isOverlap(ArrayList<Cylinder> cylinderList) {
     PVector vDistBall = new PVector(location.x - mover.location.x, location.z - mover.location.z);
     float distBall = vDistBall.mag();
-    if (distBall <= cylinderRadius + BALL_RADIUS) {
+    if (distBall <= CYLINDER_RADIUS + BALL_RADIUS) {
       return true;
     }
     for (Cylinder c : cylinderList) {
       PVector vDist = new PVector(location.x - c.location.x, location.z - c.location.z);
       float dist = vDist.mag();
-      if ((dist <= 2 * cylinderRadius)) {
+      if ((dist <= 2 * CYLINDER_RADIUS)) {
         return true;
       }
     }

@@ -1,6 +1,9 @@
-private final float MAX_ANGLE = PI/3.0;
+private final float MAX_ANGLE = PI/3.0; //<>//
 private final float MIN_SPEED = 0.2;
 private final float MAX_SPEED = 1.5;
+private final float CYLINDER_RADIUS = 40; 
+private final float CYLINDER_HEIGHT = 50; 
+private final int CYLINDER_RESOLUTION = 40;
 private float speed, xAngle, zAngle;
 private Board board;
 private Mover mover;
@@ -11,6 +14,7 @@ private BarChart bc;
 private ArrayList<Float> score;
 private final PVector GRAVITY = new PVector(0, 0.981, 0);
 private final float BALL_RADIUS = 20;
+private final float BALL_BOUNCINESS = 0.7;
 private final float BOX_SIDE = 500;
 private final float BOX_THICK = 10;
 private final int DISPLAY_SCORE_HEIGHT = 160;
@@ -27,6 +31,7 @@ void settings() {
 void setup() {
   noStroke();
   lights();
+  frameRate(20);
   //creating variables
   xAngle = zAngle = 0;
   speed = 1;
@@ -72,11 +77,9 @@ void draw() {
     c.display();
   }
   if (!isShiftClicked()) {
-    mover.update(); //<>//
+    mover.update();
     mover.checkEdges();
-    for (Cylinder c : cylinderList) {
-      mover.checkCylinderCollision(c);
-    }
+    mover.checkCylinderCollision();
   }
   mover.display();
 }
@@ -137,7 +140,7 @@ void drawTopView() {
   for (Cylinder c : cylinderList) {
     float c_xPos = topView.width/2 + (c.location.x * (topView.width*1.0 / BOX_SIDE));
     float c_yPos = topView.height/2 + (c.location.z * (topView.height*1.0 / BOX_SIDE));
-    topView.ellipse(c_xPos, c_yPos, c.cylinderRadius/2, c.cylinderRadius/2);
+    topView.ellipse(c_xPos, c_yPos, CYLINDER_RADIUS/2, CYLINDER_RADIUS/2);
   }
   topView.endDraw();
 }

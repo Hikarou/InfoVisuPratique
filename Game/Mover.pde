@@ -1,4 +1,4 @@
-class Mover {
+class Mover { //<>//
   private PVector location;
   private PVector velocity;
   private PVector gravityForce; // Gravity vector.
@@ -32,20 +32,20 @@ class Mover {
   void checkEdges() {
     boolean checked = false;
     if (location.x > BOX_SIDE/2) {
-      velocity.x = velocity.x * -0.5;
+      velocity.x = velocity.x * -BALL_BOUNCINESS;
       location.x = BOX_SIDE/2;
       checked = true;
     } else if (location.x < -BOX_SIDE/2) {
-      velocity.x = velocity.x * -0.5;
+      velocity.x = velocity.x * -BALL_BOUNCINESS;
       location.x = -BOX_SIDE/2;
       checked = true;
     }
     if (location.z > BOX_SIDE/2) {
-      velocity.z = velocity.z * -0.5;
+      velocity.z = velocity.z * -BALL_BOUNCINESS;
       location.z = BOX_SIDE/2;
       checked = true;
     } else if (location.z < -BOX_SIDE/2) {
-      velocity.z = velocity.z * -0.5;
+      velocity.z = velocity.z * -BALL_BOUNCINESS;
       location.z = -BOX_SIDE/2;
       checked = true;
     }
@@ -55,31 +55,38 @@ class Mover {
     }
   }
 
-  void checkCylinderCollision(Cylinder cylinder) {
-    PVector Vdist = new PVector(location.x - cylinder.location.x, location.z - cylinder.location.z);
-    float distance = Vdist.mag();
-    if (distance <= BALL_RADIUS + cylinder.cylinderRadius) {
-      updateScore(velocity.mag());
-      location.x = location.x + Vdist.x  / (BALL_RADIUS+cylinder.cylinderRadius);
-      location.z = location.z + Vdist.z / (BALL_RADIUS+cylinder.cylinderRadius);
-      PVector normal = new PVector(location.x - cylinder.location.x, 0, location.z - cylinder.location.z).normalize();
-      velocity = PVector.sub(velocity, normal.mult(PVector.dot(velocity, normal) * 2));
+  void checkCylinderCollision() {
+    PVector sumOfNormals = new PVector(0, 0, 0);
+    for (Cylinder cylinder : cylinderList) {
+      PVector Vdist = new PVector(location.x - cylinder.location.x, location.z - cylinder.location.z);
+      float distance = Vdist.mag();
+      if (distance <= BALL_RADIUS + CYLINDER_RADIUS) {
+        updateScore(velocity.mag()); //<>//
+        if (velocity.mag() >= 1.5) {
+          PVector normal = new PVector(location.x - cylinder.location.x, 0, location.z - cylinder.location.z).normalize();
+          sumOfNormals = PVector.add(sumOfNormals, normal);
+        }
+      }
     }
+    sumOfNormals = sumOfNormals.normalize();
+    location.x = location.x + sumOfNormals.x / (BALL_RADIUS + CYLINDER_RADIUS);
+    location.z = location.z + sumOfNormals.z / (BALL_RADIUS + CYLINDER_RADIUS);
+    velocity = PVector.sub(velocity, sumOfNormals.mult(PVector.dot(velocity, sumOfNormals) * 2));
   }
-  
+
   void updateScore(float magn) {
     collisionCounter++;
-      if (score.size() > 2) {
-        score.remove(0);
+    if (score.size() > 2) {
+      score.remove(0);
+    }
+    score.add(score.get(score.size() - 1) + magn);
+    if (collisionCounter > UPDATE_RATE) {
+      collisionCounter = 0;
+      if (bc.scoreRecap.size() > MAX_ENTRIES) {
+        bc.scoreRecap.remove(0);
+        changedScroll=true;
       }
-      score.add(score.get(score.size() - 1) + magn);
-      if (collisionCounter > UPDATE_RATE) {
-        collisionCounter = 0;
-        if(bc.scoreRecap.size() > MAX_ENTRIES) {
-          bc.scoreRecap.remove(0);
-          changedScroll=true;
-        }
-        bc.scoreRecap.add(score.get(score.size()-1));
-      }
+      bc.scoreRecap.add(score.get(score.size()-1));
+    }
   }
 }
