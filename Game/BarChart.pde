@@ -1,10 +1,9 @@
 class BarChart { 
-  private final int BARCHART_WIDTH, BARCHART_HEIGHT, SLOT_WIDTH, NUM_SLOTS;
+  private final int BARCHART_WIDTH, BARCHART_HEIGHT, SLOT_WIDTH;
   private final color COLOUR;
   private ArrayList<Float> scoreRecap; 
   private PGraphics graphic;
 
-  //A Revoir...
   BarChart(int barChartWidth, int barCharHeight) {
     scoreRecap = new ArrayList<Float>(); 
     scoreRecap.add(0.);
@@ -12,7 +11,6 @@ class BarChart {
     BARCHART_HEIGHT = barCharHeight;
     SLOT_WIDTH = BARCHART_HEIGHT/20;
     COLOUR = color(246, 229, 160);
-    NUM_SLOTS = BARCHART_WIDTH/SLOT_WIDTH;
     graphic = createGraphics(BARCHART_WIDTH, BARCHART_HEIGHT, P2D);
   }
 
@@ -24,6 +22,7 @@ class BarChart {
       graphic.background(COLOUR);
       lastDrawn = 0;
     }
+    //Only update after UPDATE_RATE number of actions or if the scrollbar has been clicked
     if (mover.collisionCounter == 0 || changedScroll) {
       int drawUntil = scoreRecap.size();
       for (int x = lastDrawn; x < drawUntil; x++) {

@@ -4,10 +4,8 @@ class Board {
     zAngle = 0.0;
   }
   void display(boolean isShiftClicked) {
-    //noStroke();
     fill(118);
-
-    translate(width/2, height/2, 0);
+    //Add cylinders mode
     if (isShiftClicked) {
       rotateX(-PI/2.0);
     } else {

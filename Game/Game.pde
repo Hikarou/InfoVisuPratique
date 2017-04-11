@@ -1,31 +1,23 @@
 private final float MAX_ANGLE = PI/3.0;
 private final float MIN_SPEED = 0.2;
 private final float MAX_SPEED = 1.5;
-private float speed;
-private float xAngle;
-private float zAngle;
+private float speed, xAngle, zAngle;
 private Board board;
 private Mover mover;
 private ArrayList<Cylinder> cylinderList;
-private PGraphics bgScore;
-private PGraphics topView;
-private PGraphics scoreBoard;
-private PGraphics barChart;
+private PGraphics bgScore, topView, scoreBoard, barChart;
 private HScrollbar hs;
 private BarChart bc;
-private PGraphics bcPg;
 private ArrayList<Float> score;
-//private final float GRAPH_POINTS_WIDTH_FULL = 5;
-//private final float GRAPH_POINTS_HEIGHT = 2.5;
 private final PVector GRAVITY = new PVector(0, 0.981, 0);
 private final float BALL_RADIUS = 20;
 private final float BOX_SIDE = 500;
 private final float BOX_THICK = 10;
 private final int DISPLAY_SCORE_HEIGHT = 160;
 private final int UPDATE_RATE = 5;
-private int MAX_ENTRIES;
+private int MAX_ENTRIES, lastDrawn;
 private boolean changedScroll;
-private int lastDrawn;
+
 
 void settings() {
   fullScreen();
@@ -39,7 +31,7 @@ void setup() {
   xAngle = zAngle = 0;
   speed = 1;
   score = new ArrayList();
-  //Start with value 0 to begin at a correct score
+  //Start with value 0 to begin at a correct score need double value for calculations
   score.add(0.);
   score.add(0.);
   board = new Board();
@@ -60,11 +52,6 @@ void draw() {
   camera();
   background(255);
 
-  /* for debug purpose
-   textSize(32);
-   fill(0, 102, 153);
-   text("xAngle : " + xAngle + ", zAngle = " + zAngle + ", speed : " + speed, 10, 60);
-   // */
   drawBgScore();
   image(bgScore, 0, height - bgScore.height);
   drawTopView();
@@ -78,13 +65,14 @@ void draw() {
   directionalLight(50, 100, 125, 1, 1, 1);
   ambientLight(120, 120, 120);
   adjustParameters();
+  translate(width/2, height/2, 0);
 
   board.display(isShiftClicked());
   for (Cylinder c : cylinderList) {
     c.display();
   }
   if (!isShiftClicked()) {
-    mover.update();
+    mover.update(); //<>//
     mover.checkEdges();
     for (Cylinder c : cylinderList) {
       mover.checkCylinderCollision(c);

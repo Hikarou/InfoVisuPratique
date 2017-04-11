@@ -1,8 +1,8 @@
 class Cylinder {
   private PVector location; // Coordinate vector of cylinder.
-  private float cylinderRadius = 40; // Cylinder radius.
-  private float cylinderHeight = 50; // Cylinder height.
-  private int cylinderResolution = 40; // Cylinder resolution.
+  private final float cylinderRadius = 40; // Cylinder radius.
+  private final float cylinderHeight = 50; // Cylinder height.
+  private final int cylinderResolution = 40; // Cylinder resolution.
   private PShape openCylinder = new PShape(); // The empty shell cylinder.
   private PShape topClosed = new PShape(); // The top circle of the cylinder.
   private PShape bottomClosed = new PShape(); // The bottom circle of the cylinder.
