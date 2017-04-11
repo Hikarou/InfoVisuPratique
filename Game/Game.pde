@@ -31,7 +31,6 @@ void settings() {
 void setup() {
   noStroke();
   lights();
-  frameRate(20);
   //creating variables
   xAngle = zAngle = 0;
   speed = 1;
